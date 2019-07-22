@@ -2,12 +2,12 @@
 
 Contributors: Manny Rodrigues  
 Donations: https://endurtech.com/give-thanks/  
-Tags: wordpress,email  
-Requires PHP: 7.0  
+Tags: email,email from,from,outgoing mail,mail,default  
 Requires WP: 5.0+  
 Tested to: 5.2.2  
-Stable tag: 1.4  
-License: GPLv2 or later  
+Stable tag: 1.4.2  
+License: GPLv3 or later  
+
 
 ## Description
 
@@ -38,11 +38,17 @@ License: GPLv2 or later
 
 ## Changelog
 
-* 1.4  
+* 1.4.2
+  * +Updated settings page styles.
+* 1.4.1
+  * +Updated code formatting.
+  * +Updated GPL licensing.
+  * Renamed languages folder to locale.
+* 1.4.0  
   * +Added database cleanup function upon plugin deactivation.  
-* 1.3  
+* 1.3.0  
   * +Added notice of disabled emails in admin dashboard at a glance metabox.  
-* 1.2  
+* 1.2.0  
   * +Added ability to disable ALL WordPress emails.  
-* 1.0  
+* 1.0.0  
   * Initial release.  
