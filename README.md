@@ -5,9 +5,8 @@ Donations: https://endurtech.com/give-thanks/
 Tags: email,email from,from,outgoing mail,mail,default  
 Requires WP: 5.0+  
 Tested to: 5.2.2  
-Stable tag: 1.4.2  
+Stable tag: 1.6  
 License: GPLv3 or later  
-
 
 ## Description
 
@@ -17,7 +16,7 @@ License: GPLv3 or later
 
 > With this plugin, you may easily update those FROM values or completely disable ALL email sending. *Be sure to test the disable email function on your server environment to ensure proper function.*  
 
-> Did our plugin save you time and add value? [Share your appreciation](https://paypal.me/endurtechnology) while supporting future improvements.  
+Did this plugin save you time and add value? [Share your appreciation](https://endurtech.com/give-thanks/) and support future improvements.  
 
 ## Features
 
@@ -38,6 +37,10 @@ License: GPLv3 or later
 
 ## Changelog
 
+* 1.6
+  * +Added ability to disable admin email upon user registration.
+* 1.5
+  * +Added ability to disable admin email upon user password change.
 * 1.4.2
   * +Updated settings page styles.
 * 1.4.1

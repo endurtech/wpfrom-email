@@ -3,7 +3,7 @@
 Plugin Name: WPFrom Email
 Plugin URI: https://endurtech.com/wpfrom-wordpress-plugin-change-default-from-email-and-name/
 Description: Replaces the default WordPress email FROM Name and Email: WordPress &lt;wordpress@yourdomain.com&gt;
-Version: 1.4.2
+Version: 1.6.0
 Author: Manny Rodrigues
 Author URI: https://endurtech.com
 Text Domain: wpfrom-emails
@@ -12,6 +12,22 @@ Requires WP: 5.0+
 Tested up to: 5.2.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
+
+TODOS:
+
+w wanted
+n not wanted
+/ in dev
+x completed
+
+/ New user notification to admin
+w New user notification to user
+n Notify postauthor
+n Notify moderator
+x Password change notification to admin
+x Password change notification to user
+n E-mail address change notification to user
+
 -------------------------------------------------- */
 
 if( ! defined( 'ABSPATH' ) )
@@ -21,7 +37,7 @@ if( ! defined( 'ABSPATH' ) )
 
 define( 'WPF_TITLE', 'WPFrom Email' ); // Title
 define( 'WPF_SETTINGS', 'WPFrom Email Settings' ); // Settings page title 
-define( 'WPF_VERSION', '1.4.2' ); // Plugin version
+define( 'WPF_VERSION', '1.6.0' ); // Plugin version
 
 /*
 * Load plugin textdomain
@@ -69,7 +85,9 @@ function wpfrom_deactivation_cleaner()
   delete_option( 'wpfrom_mail_sender_email_id' );
   delete_option( 'wpfrom_mail_sender_id' ); // since 1.0, now junk
   delete_option( 'wpfrom_mail_sender_name_id' );
-  delete_option( 'wpfrom_kill_email_id' );
+  delete_option( 'wpfrom_kill_email_id' ); // since 1.4.2, now junk
+  delete_option( 'wpfrom_pwd_admin_email_id' );
+  delete_option( 'wpfrom_pwd_user_email_id' );
 }
 
 // WordPress plugin registration
@@ -87,9 +105,12 @@ function wpfrom_mail_sender_register()
   // Custom WordPress Sender Name
 	add_settings_field( 'wpfrom_mail_sender_name_id', __('Custom Senders Name', 'wpfrom-mail'), 'wpfrom_mail_sender_name', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
   register_setting( 'wpfrom_mail_sender_section', 'wpfrom_mail_sender_name_id' );
-  // Disable WordPress Emails ALL
-  add_settings_field( 'wpfrom_kill_email_id', __('WordPress Emails', 'wpfrom-mail'), 'wpfrom_mail_killer', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
-  register_setting( 'wpfrom_mail_sender_section', 'wpfrom_kill_email_id' );
+  // Disable WordPress "Password Changed" Admin Email
+  add_settings_field( 'wpfrom_pwd_admin_email_id', __('Password Changed', 'wpfrom-mail'), 'wpfrom_pwd_admin_email', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
+  register_setting( 'wpfrom_mail_sender_section', 'wpfrom_pwd_admin_email_id' );
+  // Disable WordPress "Password Changed" User Email
+  add_settings_field( 'wpfrom_pwd_user_email_id', __('Password Changed', 'wpfrom-mail'), 'wpfrom_pwd_user_email', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
+  register_setting( 'wpfrom_mail_sender_section', 'wpfrom_pwd_user_email_id' );
 }
 
 // Enable WPFrom Custom Sender checkbox
@@ -104,7 +125,7 @@ function wpfrom_custom_sender()
   {
     $custom_email = 'checked="checked" ';
   }
-  echo '<input name="wpfrom_custom_sender_id" id="wpfrom_custom_sender_id" type="checkbox" value="1" '.$custom_email.'/> <label for="wpfrom_custom_sender_id">Enable Custom WordPress Emails?</em></label>';
+  echo '<input name="wpfrom_custom_sender_id" id="wpfrom_custom_sender_id" type="checkbox" value="1" '.$custom_email.'/> <label for="wpfrom_custom_sender_id">Enable custom WordPress emails?</em></label>';
 }
 
 // FROM Email field
@@ -115,7 +136,7 @@ function wpfrom_mail_sender_email()
   {
     delete_option( 'wpfrom_mail_sender_email_id' );
   }
-  echo '<input name="wpfrom_mail_sender_email_id" id="wpfrom_mail_sender_email_id" type="email" placeholder="wordpress@yourdomain.com" class="regular-text" value="' . $sender_email . '" />';
+  echo '<input name="wpfrom_mail_sender_email_id" id="wpfrom_mail_sender_email_id" type="email" placeholder="wordpress@yourdomain.com" class="regular-text" value="' . $sender_email . '" /><br /><span style="font-size:12px; padding-left:10px;">Want to Disable ALL WordPress emails? Leave this blank!</span>';
 }
 
 // FROM Name field
@@ -129,19 +150,34 @@ function wpfrom_mail_sender_name()
   echo '<input name="wpfrom_mail_sender_name_id" id="wpfrom_mail_sender_name_id" type="text" placeholder="WordPress" class="regular-text" value="' . $sender_name . '" />';
 }
 
-// Disable WordPress Emails checkbox
-function wpfrom_mail_killer()
+// Disable Admin Password Changed checkbox
+function wpfrom_pwd_admin_email()
 {
-  $email_killer = get_option( 'wpfrom_kill_email_id' );
-  if( ! isset ( $email_killer ) || $email_killer == '' )
+  $pwd_admin_email = get_option( 'wpfrom_pwd_admin_email_id' );
+  if( ! isset ( $pwd_admin_email ) || $pwd_admin_email == '' )
   {
-    delete_option( 'wpfrom_kill_email_id' );
+    delete_option( 'wpfrom_pwd_admin_email_id' );
   }
   else
   {
-    $email_killer = 'checked="checked" ';
+    $pwd_admin_email = 'checked="checked" ';
   }
-  echo '<input name="wpfrom_kill_email_id" id="wpfrom_kill_email_id" type="checkbox" value="1" '.$email_killer.'/> <label for="wpfrom_kill_email_id">Disable ALL WordPress Emails? Kills wp_mail(), <em>slowly.</em></label>';
+  echo '<input name="wpfrom_pwd_admin_email_id" id="wpfrom_pwd_admin_email_id" type="checkbox" value="1" '.$pwd_admin_email.'/> <label for="wpfrom_pwd_admin_email_id">Disable <strong>Admin email</strong> upon user password change?</em></label>';
+}
+
+// Disable User Password Changed checkbox
+function wpfrom_pwd_user_email()
+{
+  $pwd_user_email = get_option( 'wpfrom_pwd_user_email_id' );
+  if( ! isset ( $pwd_user_email ) || $pwd_user_email == '' )
+  {
+    delete_option( 'wpfrom_pwd_user_email_id' );
+  }
+  else
+  {
+    $pwd_user_email = 'checked="checked" ';
+  }
+  echo '<input name="wpfrom_pwd_user_email_id" id="wpfrom_pwd_user_email_id" type="checkbox" value="1" '.$pwd_user_email.'/> <label for="wpfrom_pwd_user_email_id">Disable <strong>User email</strong> upon user password change?</em></label>';
 }
 
 // Page description
@@ -156,14 +192,15 @@ function wpfrom_mail_sender_text()
 // Settings form
 function wpfrom_mail_sender_output()
 {
-  echo '<div class="wrap" style="padding:40px 20px; border:1px solid #cccccc; background:#ffffff;">
-    <img src="' . plugins_url( 'wpfrom-logo.png', __FILE__ ) . '" style="max-width:80px; width:100%; height:auto; float:right;" />
-    <h1 style="padding:20px;">' . WPF_TITLE . ' v' . WPF_VERSION . '</h1>
+  echo '<div style="padding:20px 0px 20px 20px;">
+    <img src="' . plugins_url( 'wpfrom-logo.png', __FILE__ ) . '" style="max-width:80px; width:100%; height:auto; float:left;" />
+    <h1 style="float:left; padding:20px 0px 0px 20px;">' . WPF_TITLE . '</h1>
+    <div style="clear:both;"></div>
   </div>
-  <div class="wrap" style="padding:20px; border:1px solid #cccccc; background:#ffffff;">
+  <div class="wrap" style="padding:20px; border-top:1px solid #cccccc; border-right:1px solid #cccccc; border-bottom:2px solid #cccccc; border-left:2px solid #cccccc; border-radius:10px; background:#ffffff;">
     <form method="post" action="options.php">';
-      do_settings_sections( 'wpfrom_mail_sender' );
       settings_fields( 'wpfrom_mail_sender_section' );
+      do_settings_sections( 'wpfrom_mail_sender' );
       submit_button();
   echo '</form>
   </div>';
@@ -193,17 +230,61 @@ function wpfrom_new_mail_from_name()
   return get_option( 'wpfrom_mail_sender_name_id' );
 }
 
-// Disable ALL WordPress email. PHPMailer class hook to ClearAllRecipients
-add_filter( 'wp_mail', 'wpfrom_email_killer' );
-function wpfrom_email_killer( $args )
+// Disable Admin Password Changed email
+$pwd_admin_email_init = get_option( 'wpfrom_pwd_admin_email_id' );
+if( $pwd_admin_email_init == '1' )
 {
-  $email_killer_init = get_option( 'wpfrom_kill_email_id' );
-  if( $email_killer_init == '1' )
+  if ( ! function_exists( 'wp_password_change_notification' ) )
   {
-    add_action( 'phpmailer_init', 'wpfrom_clear_recipients' );
+    function wp_password_change_notification( $user )
+    {
+        return;
+    }
   }
 }
-function wpfrom_clear_recipients( $phpmailer )
+
+// Disable User Password Changed email
+$pwd_user_email_init = get_option( 'wpfrom_pwd_user_email_id' );
+if( $pwd_user_email_init == '1' )
 {
-  $phpmailer->ClearAllRecipients();
+  add_filter( 'send_password_change_email', '__return_false' );
 }
+
+
+
+
+
+
+
+/*
+// prevent admin notification email for new registered users or user password changes
+add_action( 'phpmailer_init', 'conditional_mail_stop' );
+function conditional_mail_stop()
+{
+  global $phpmailer;
+  $blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+  $subject = array(
+    sprintf( __( '[%s] New User Registration' ), $blogname ),
+    sprintf( __( '[%s] Password Lost/Changed' ), $blogname )
+  );
+  if ( in_array( $phpmailer->Subject, $subject ) )
+  {
+    // empty $phpmailer class -> email cannot be sent
+    $phpmailer = new PHPMailer( true );
+  }
+}
+
+// Gravity Forms User Registration Add-on and Custom Notifications? This will Disable the Default WordPress Admin and User Notifications.
+if ( ! function_exists( 'gf_new_user_notification' ) )
+{
+  function gf_new_user_notification( $user_id, $plaintext_pass = '', $notify = '' )
+  {
+    return;
+  }
+}
+*/
+
+
+
+
+
