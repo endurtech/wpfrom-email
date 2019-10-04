@@ -3,8 +3,8 @@
 Contributors: Manny Rodrigues  
 Donations: https://endurtech.com/give-thanks/  
 Tags: email,email from,from,outgoing mail,mail,default  
-Requires WP: 5.0+  
-Tested to: 5.2.2  
+Requires WP: 5.0  
+Tested to: 5.2.3  
 Stable tag: 1.6.0  
 License: GPLv3 or later  
 
@@ -54,4 +54,13 @@ Did this plugin save you time and add value? [Share your appreciation](https://e
 * 1.2.0  
   * +Added ability to disable ALL WordPress emails.  
 * 1.0.0  
-  * Initial release.  
+  * Initial release.
+
+## Frequently Asked Questions
+
+* How do I use this plugin?
+  * Upon activation, visit the "Settings > WPFrom Email" section and adjust as needed.
+* Emails are not going out?
+  * If you check the "Enable" box, you must provide a senders email address. Otherwise no emails are sent. Another possibility is that you have checked the disable emails box. In that case, uncheck it and save the form.
+* How does it kill wp_mail, *slowly*?
+  * It is just a joke. No functions are injured during execution.
