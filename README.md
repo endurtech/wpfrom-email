@@ -5,7 +5,7 @@ Donations: https://endurtech.com/give-thanks/
 Tags: email,email from,from,outgoing mail,mail,default  
 Requires WP: 5.0+  
 Tested to: 5.2.2  
-Stable tag: 1.6  
+Stable tag: 1.6.0  
 License: GPLv3 or later  
 
 ## Description
@@ -37,9 +37,9 @@ Did this plugin save you time and add value? [Share your appreciation](https://e
 
 ## Changelog
 
-* 1.6
+* 1.6.0
   * +Added ability to disable admin email upon user registration.
-* 1.5
+* 1.5.0
   * +Added ability to disable admin email upon user password change.
 * 1.4.2
   * +Updated settings page styles.
