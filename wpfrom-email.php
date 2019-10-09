@@ -1,32 +1,28 @@
 <?php
 /* --------------------------------------------------
 Plugin Name: WPFrom Email
-Plugin URI: https://endurtech.com/wpfrom-wordpress-plugin-change-default-from-email-and-name/
-Description: Replaces the default WordPress email FROM Name and Email: WordPress &lt;wordpress@yourdomain.com&gt;
-Version: 1.6.0
+Plugin URI: https://endurtech.com/wpfrom-email-wordpress-plugin/
+Description: Replaces default WordPress sender FROM Name and Email Address. NEW admin email options.
+Version: 1.6.1
 Author: Manny Rodrigues
 Author URI: https://endurtech.com
 Text Domain: wpfrom-emails
 Domain Path: /locale
 Requires WP: 5.0+
-Tested up to: 5.2.2
+Tested up to: 5.2.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 TODOS:
-
-w wanted
-n not wanted
-/ in dev
-x completed
-
-/ New user notification to admin
-w New user notification to user
-n Notify postauthor
-n Notify moderator
-x Password change notification to admin
-x Password change notification to user
-n E-mail address change notification to user
+- Disable 'New User' admin notification email
+- Disable 'New User' user notification email
+- Disable 'Notify postauthor' email
+- Disable 'Notify moderator' email
+- Disable 'E-mail address change' user notification email
+- Add different languages
+COMPLETED:
+- Disable 'Password changed' admin notification
+- Disable 'Password changed' user notification
 
 -------------------------------------------------- */
 
@@ -37,7 +33,7 @@ if( ! defined( 'ABSPATH' ) )
 
 define( 'WPF_TITLE', 'WPFrom Email' ); // Title
 define( 'WPF_SETTINGS', 'WPFrom Email Settings' ); // Settings page title 
-define( 'WPF_VERSION', '1.6.0' ); // Plugin version
+define( 'WPF_VERSION', '1.6.1' ); // Plugin version
 
 /*
 * Load plugin textdomain
@@ -69,8 +65,9 @@ function wpfrom_email_settings_link( $links )
 add_filter( 'dashboard_glance_items', 'wpfrom_dashboard_disabled_notice' );
 function wpfrom_dashboard_disabled_notice( $glances )
 {
-  $email_killer_init = get_option( 'wpfrom_kill_email_id' );
-  if( $email_killer_init == '1' )
+  $email_killed_init = get_option( 'wpfrom_mail_sender_email_id' );
+  $custom_email = get_option( 'wpfrom_custom_sender_id' );
+  if( $email_killed_init == '' && $custom_email == '1' )
   {
     $glances[] = '<li style="float:none;"><i class="dashicons dashicons-email" aria-hidden="true" style="color:#e14d43;"></i> WordPress Emails <strong>Disabled</strong></li>';
 	}
@@ -183,10 +180,8 @@ function wpfrom_pwd_user_email()
 // Page description
 function wpfrom_mail_sender_text()
 {
-  echo '<p>Replaces the default WordPress email FROM <strong>Name</strong> and <strong>Email</strong>: <strong>WordPress &lt;wordpress@yourdomain.com&gt;</strong></p>
-  <p>Enable and set your FROM Email (<strong><em>required</em></strong>) and Name. To aid email delivery, use a real address on your server.</p>
-  <p>Checking "Disable" option will disable ALL emails. <strong>WARNING!</strong> Fully test it on your website to confirm operation.</p>
-  <p>Did <a href="https://endurtech.com/wpfrom-wordpress-plugin-to-change-the-default-from-email-and-name/" target="_blank" title="Opens New Window">our plugin</a> save you time and add value? <a href="https://paypal.me/endurtechnology" target="_blank" title="Opens New Window"><strong>Share your appreciation</strong></a> while supporting future improvements.</p>';
+  echo '<p>Replaces the default WordPress FROM <strong>Email</strong> and <strong>Name</strong>. Enable and set Senders Email (<strong><em>otherwise all mail is disabled</em></strong>).</p>
+  <p>Did <a href="https://wordpress.org/plugins/wpfrom-email/" target="_blank" title="Opens New Window">this plugin</a> save you time and add value? <a href="https://endurtech.com/give-thanks/" target="_blank" title="Opens New Window"><strong>Share your appreciation</strong></a> and support future improvements.</p>';
 }
 
 // Settings form
@@ -250,14 +245,8 @@ if( $pwd_user_email_init == '1' )
   add_filter( 'send_password_change_email', '__return_false' );
 }
 
-
-
-
-
-
-
 /*
-// prevent admin notification email for new registered users or user password changes
+// prevent admin email notification for new registered users or user password changes
 add_action( 'phpmailer_init', 'conditional_mail_stop' );
 function conditional_mail_stop()
 {
@@ -273,8 +262,11 @@ function conditional_mail_stop()
     $phpmailer = new PHPMailer( true );
   }
 }
+*/
 
-// Gravity Forms User Registration Add-on and Custom Notifications? This will Disable the Default WordPress Admin and User Notifications.
+/*
+// Gravity Forms User Registration Add-on and Custom Notifications?
+// This will Disable the Default WordPress Admin and User Notifications.
 if ( ! function_exists( 'gf_new_user_notification' ) )
 {
   function gf_new_user_notification( $user_id, $plaintext_pass = '', $notify = '' )
@@ -283,8 +275,3 @@ if ( ! function_exists( 'gf_new_user_notification' ) )
   }
 }
 */
-
-
-
-
-
