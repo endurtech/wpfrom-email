@@ -9,7 +9,7 @@ Author URI: https://endurtech.com
 Text Domain: wpfrom-emails
 Domain Path: /locale
 Requires WP: 5.0+
-Tested up to: 5.2.3
+Tested up to: 5.2.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -144,7 +144,7 @@ function wpfrom_mail_sender_name()
   {
     delete_option( 'wpfrom_mail_sender_name_id' );
   }
-  echo '<input name="wpfrom_mail_sender_name_id" id="wpfrom_mail_sender_name_id" type="text" placeholder="WordPress" class="regular-text" value="' . $sender_name . '" />';
+  echo '<input name="wpfrom_mail_sender_name_id" id="wpfrom_mail_sender_name_id" type="text" placeholder="WordPress" class="regular-text" value="' . $sender_name . '" /><br /><span style="font-size:12px; padding-left:10px;">Do not use commas and/or other special characters.</span>';
 }
 
 // Disable Admin Password Changed checkbox

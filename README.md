@@ -4,7 +4,7 @@ Contributors: Manny Rodrigues
 Donations: https://endurtech.com/give-thanks/  
 Tags: email,email from,from,outgoing mail,mail,disable email, default  
 Requires WP: 5.0  
-Tested to: 5.2.3  
+Tested to: 5.2.4  
 Stable tag: 1.6.1  
 License: GPLv3 or later  
 
@@ -40,6 +40,8 @@ Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you
 
 * 1.6.1
   * Fixed Dashboard At a Glance Metabox notice of WordPress Emails Disabled.
+  * Added notice to not use commas (,) and other special characters within the Senders Name field.
+  * Tested against WordPress 5.2.4
 * 1.6.0
   * Added ability to disable admin email upon user registration.
 * 1.5.0
