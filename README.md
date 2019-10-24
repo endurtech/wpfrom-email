@@ -4,7 +4,7 @@ Contributors: Manny Rodrigues
 Donations: https://endurtech.com/give-thanks/  
 Tags: email,email from,from,outgoing mail,mail,disable email, default  
 Requires WP: 5.0  
-Tested to: 5.2.4  
+Tested to: 5.3.0  
 Stable tag: 1.6.1  
 License: GPLv3 or later  
 

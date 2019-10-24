@@ -3,7 +3,7 @@ Contributors: endurox
 Tags: email, email from, outging mail, disable email, disable outgoing, admin email, notification, password, default
 Donate link: https://endurtech.com/give-thanks/
 Requires at least: 5.0
-Tested up to: 5.2.4
+Tested up to: 5.3.0
 Requires PHP: 5.6
 Stable tag: 1.6.1
 License: GPLv3 or later
