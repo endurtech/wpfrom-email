@@ -21,11 +21,11 @@ Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you
 == Features ==
 
 * Easily replace the default WordPress FROM Name and Email Address.
-* Disable ALL WordPress emails. Test on your server to confirm operation.
-* Notice of Disabled WordPress emails within Dashboard At A Glance Metabox.
-* Disable Admin email when a user updates their password on your site.
-* Disable User email notification when someone updates their password.
-* Upon deactivation, all associated database values will be removed.
+* Disable Admin email notification upon user password reset.
+* Disable User email notification upon user password change.
+* Disable ALL WordPress emails by leaving the Senders Email field blank.
+* Notice of Disabled WordPress emails within Dashboard At A Glance metabox.
+* Upon deactivation, all associated database values are removed.
 
 == Installation ==
 

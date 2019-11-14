@@ -53,6 +53,14 @@ if ( ! function_exists( 'gf_new_user_notification' ) )
     return;
   }
 }
+// Display admin backend warning that emails are being stopped
+add_action( 'admin_notices', array( $this, 'wpfrom_backend_warning' ) );
+function wpfrom_backend_warning()
+{
+		echo "\n<div class='error'><p><strong>' . esc_html_e( 'Emails Disabled', 'wpfrom-email' ) . ':</strong> ';
+      esc_html_e( 'The FROM email is missing within the WPFrom Email plugin settings. This disables all emails from your web site. To fix, disable the plugin or provide an email address.', 'wpfrom-email' );
+		echo '</p></div>';
+	}
 -------------------------------------------------- */
 
 if( ! defined( 'ABSPATH' ) )
