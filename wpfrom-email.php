@@ -9,25 +9,27 @@ License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.0
 Tested up to: 5.3
-Version: 1.6.2
+Version: 1.7
 Text Domain: wpfrom-emails
 Domain Path: /locale
 
+
 TODOS:
-- Use one database table to obtain/set values.
-- Option: Disable 'New User' admin email notification.
+=====================================================
+- Use one database record to obtain/set values.
+- Option: Disable 'Password changed' admin email notification.
+- Option: Disable 'E-mail address change' user email notification.
+- Add different languages.
+
+x Option: Disable 'New User' admin email notification.
+---- ---- It does effect acount activation emails. These notifications must be manually created within Gravity Forms.
 ---- Not sure if this will effect account activation emails.
 x Option: Disable 'New User' user email notification.
 ---- Don't disable if you provide credentials upon registration.
-- Option: Disable 'Password changed' admin email notification.
-x Option: Disable 'Notify postauthor' email.
-x Option: Disable 'Notify moderator' email.
-- Option: Disable 'E-mail address change' user email notification.
-- Add different languages.
-COMPLETED:
-- Disable 'Password reset' admin email notification.
-- Disable 'Password changed' user email notification.
+
+
 NOTEPAD:
+=====================================================
 // Prevent admin email notification for new registered users or user password changes
 add_action( 'phpmailer_init', 'conditional_mail_stop' );
 function conditional_mail_stop()
@@ -44,23 +46,15 @@ function conditional_mail_stop()
     $phpmailer = new PHPMailer( true );
   }
 }
-// Gravity Forms User Registration Add-on and Custom Notifications?
-// This will Disable the Default WordPress Admin and User Notifications.
-if ( ! function_exists( 'gf_new_user_notification' ) )
-{
-  function gf_new_user_notification( $user_id, $plaintext_pass = '', $notify = '' )
-  {
-    return;
-  }
-}
+
 // Display admin backend warning that emails are being stopped
-add_action( 'admin_notices', array( $this, 'wpfrom_backend_warning' ) );
+// Working. Replace existing wpfrom_dashboard_disabled_notice if users prefer this more apparent notice over the small dashboard_glance_items notice.
+add_action( 'admin_notices', 'wpfrom_backend_warning' );
 function wpfrom_backend_warning()
 {
-		echo "\n<div class='error'><p><strong>' . esc_html_e( 'Emails Disabled', 'wpfrom-email' ) . ':</strong> ';
-      esc_html_e( 'The FROM email is missing within the WPFrom Email plugin settings. This disables all emails from your web site. To fix, disable the plugin or provide an email address.', 'wpfrom-email' );
-		echo '</p></div>';
-	}
+  echo '<div class="error"><p><strong>Emails Disabled:</strong> The FROM email is missing within the WPFrom Email plugin settings. This disables all emails from your web site. To fix, disable the plugin or provide an email address.</p></div>';
+}
+
 -------------------------------------------------- */
 
 if( ! defined( 'ABSPATH' ) )
@@ -75,11 +69,13 @@ define( 'WPF_SETTINGS', 'WPFrom Email Settings' ); // Settings page title
 * Load plugin textdomain
 *
 * @since 1.0
+
 add_action( 'init', 'wpfrom_mail_load_textdomain' );
 function wpfrom_mail_load_textdomain()
 {
   load_plugin_textdomain( 'wpfrom-mail', false, basename( dirname( __FILE__ ) ) . '/locale' );
-}*/
+}
+*/
 
 // Add link to plugin settings from "Settings" menu
 add_action( 'admin_menu', 'wpfrom_mail_sender_menu' );
@@ -115,11 +111,12 @@ function wpfrom_deactivation_cleaner()
 {
   delete_option( 'wpfrom_custom_sender_id' );
   delete_option( 'wpfrom_mail_sender_email_id' );
-  delete_option( 'wpfrom_mail_sender_id' ); // since 1.0, now junk
   delete_option( 'wpfrom_mail_sender_name_id' );
-  delete_option( 'wpfrom_kill_email_id' ); // since 1.4.2, now junk
   delete_option( 'wpfrom_pwd_admin_email_id' );
+  delete_option( 'wpfrom_new_user_admin_email_id' );
   delete_option( 'wpfrom_pwd_user_email_id' );
+  delete_option( 'wpfrom_mail_sender_id' ); // since 1.0, now junk
+  delete_option( 'wpfrom_kill_email_id' ); // since 1.4.2, now junk
 }
 
 // WordPress plugin registration
@@ -140,6 +137,9 @@ function wpfrom_mail_sender_register()
   // Disable WordPress "Password Rest" admin email
   add_settings_field( 'wpfrom_pwd_admin_email_id', __('User Password Reset', 'wpfrom-mail'), 'wpfrom_pwd_admin_email', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
   register_setting( 'wpfrom_mail_sender_section', 'wpfrom_pwd_admin_email_id' );
+  // Disable WordPress "New User Registration" admin email
+  add_settings_field( 'wpfrom_new_user_admin_email_id', __('New User Registration', 'wpfrom-mail'), 'wpfrom_new_user_admin_email', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
+  register_setting( 'wpfrom_mail_sender_section', 'wpfrom_new_user_admin_email_id' );
   // Disable WordPress "Password Changed" user email
   add_settings_field( 'wpfrom_pwd_user_email_id', __('User Password Changed', 'wpfrom-mail'), 'wpfrom_pwd_user_email', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
   register_setting( 'wpfrom_mail_sender_section', 'wpfrom_pwd_user_email_id' );
@@ -197,6 +197,21 @@ function wpfrom_pwd_admin_email()
   echo '<input name="wpfrom_pwd_admin_email_id" id="wpfrom_pwd_admin_email_id" type="checkbox" value="1" '.$pwd_admin_email.'/> <label for="wpfrom_pwd_admin_email_id">Disable <strong>Admin email notice</strong> upon user password reset?</em></label>';
 }
 
+// Disable WordPress "New User Registration" admin email checkbox
+function wpfrom_new_user_admin_email()
+{
+  $new_user_admin_email = get_option( 'wpfrom_new_user_admin_email_id' );
+  if( ! isset ( $new_user_admin_email ) || $new_user_admin_email == '' )
+  {
+    delete_option( 'wpfrom_new_user_admin_email_id' );
+  }
+  else
+  {
+    $new_user_admin_email = 'checked="checked" ';
+  }
+  echo '<input name="wpfrom_new_user_admin_email_id" id="wpfrom_new_user_admin_email_id" type="checkbox" value="1" '.$new_user_admin_email.'/> <label for="wpfrom_new_user_admin_email_id">Disable <strong>Admin email notice</strong> upon "New User Registration"?</em></label><br /><span style="font-size:12px; padding-left:10px;">Only for use with Gravity Forms User Registration Add-On. <a href="https://endurtech.com/wpfrom-email-wordpress-plugin/#using-wpfrom-email-wordpress-plugin" target="_blank" title="Opens in New Window">Read more</a></span>';
+}
+
 // Disable WordPress "Password Changed" user email checkbox
 function wpfrom_pwd_user_email()
 {
@@ -236,39 +251,65 @@ function wpfrom_mail_sender_output()
   </div>';
 }
 
-// Replace default WordPress emails
+// Replace default WordPress emails with Custom Sender
 add_filter( 'wp_mail', 'wpfrom_custom_sender_init' );
 function wpfrom_custom_sender_init()
 {
   $custom_sender_init = get_option( 'wpfrom_custom_sender_id' );
   if( $custom_sender_init == '1' )
   {
+    // Replace the default FROM Email: wordpress@yourdomain.com
     add_filter( 'wp_mail_from', 'wpfrom_new_mail_from' );
+    if( ! function_exists( 'wpfrom_new_mail_from' ) )
+    {
+      function wpfrom_new_mail_from()
+      {
+        return get_option( 'wpfrom_mail_sender_email_id' );
+      }
+    }
+    // Replace the default FROM Name: WordPress
     add_filter( 'wp_mail_from_name', 'wpfrom_new_mail_from_name' );
+    if( ! function_exists( 'wpfrom_new_mail_from_name' ) )
+    {
+      function wpfrom_new_mail_from_name()
+      {
+        return get_option( 'wpfrom_mail_sender_name_id' );
+      }
+    }
   }
-}
-
-// Replace the default FROM Email: wordpress@yourdomain.com
-function wpfrom_new_mail_from()
-{
-  return get_option( 'wpfrom_mail_sender_email_id' );  
-}
-
-// Replace the default FROM Name: WordPress
-function wpfrom_new_mail_from_name()
-{
-  return get_option( 'wpfrom_mail_sender_name_id' );
 }
 
 // Disable WordPress "Password Rest" admin email
 $pwd_admin_email_init = get_option( 'wpfrom_pwd_admin_email_id' );
 if( $pwd_admin_email_init == '1' )
 {
-  if ( ! function_exists( 'wp_password_change_notification' ) )
+  if( ! function_exists( 'wp_password_change_notification' ) )
   {
     function wp_password_change_notification( $user )
     {
-        return;
+      return;
+    }
+  }
+}
+
+// Disable WordPress "New User Registration" admin email
+$new_user_admin_email_init = get_option( 'wpfrom_new_user_admin_email_id' );
+if( $new_user_admin_email_init == '1' )
+{
+  /*
+  * Disable Gravity Forms "New User Registration" notification emails
+  * There are two email notifications:
+  *   1. user notification  - email the user receives upon registration with link to set their password.
+  *   2. admin notification - email the site admin receives upon new user registration: "New User Registration"
+  * This function disables BOTH!
+  * You won't be able to use the option to email the new user their autogenerated password since that email is now disabled.
+  * Rather, you will have to create a Gravity Forms notification within your form to send out the user password setup email.
+  */
+  if( ! function_exists( 'gf_new_user_notification' ) )
+  {
+    function gf_new_user_notification( $user_id, $plaintext_pass = '', $notify = '' )
+    {
+      return;
     }
   }
 }
@@ -279,43 +320,3 @@ if( $pwd_user_email_init == '1' )
 {
   add_filter( 'send_password_change_email', '__return_false' );
 }
-
-/*
-// Disable WordPress New User Notification admin email
-if ( ! function_exists ( 'wp_new_user_notification' ) )
-{
-  function wp_new_user_notification( $user_id, $deprecated = null, $notify = '' )
-  {
-    global $wpdb, $wp_hasher;
-    $user = get_userdata( $user_id );
-
-    // blogname option is escaped with esc_html on the way into the database in sanitize_option
-    // we want to reverse this for the plain text arena of emails.
-    $blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
-
-    // Generate something random for a password reset key.
-    $key = wp_generate_password( 20, false );
-
-    // This action is documented in wp-login.php
-    do_action( 'retrieve_password_key', $user->user_login, $key );
-
-    // Now insert the key, hashed, into the DB
-    if ( empty( $wp_hasher ) )
-    {
-      $wp_hasher = new PasswordHash( 8, true );
-    }
-    $hashed = time() . ':' . $wp_hasher->HashPassword( $key );
-    $wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user->user_login ) );
-
-    $switched_locale = switch_to_locale( get_user_locale( $user ) );
-
-    $message = sprintf( __( 'Username: %s' ), $user->user_login ) . "\r\n\r\n";
-    $message .= __( 'To set your password, visit the following address:' ) . "\r\n\r\n";
-    $message .= '<' . network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user->user_login ), 'login' ) . ">\r\n\r\n";
-
-    $message .= wp_login_url() . "\r\n";
-
-    wp_mail( $user->user_email, sprintf( __( '[%s] Your username and password info' ), $blogname ), $message );
-  }
-};
-*/
