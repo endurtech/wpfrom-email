@@ -6,7 +6,7 @@ License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.0
 Tested up to: 5.3
-Stable tag: 1.6.2
+Stable tag: 1.7.0
 
 Replaces default WordPress sender FROM Name and Email Address. NEW admin email options.
 
@@ -14,7 +14,7 @@ Replaces default WordPress sender FROM Name and Email Address. NEW admin email o
 
 Introducing [WPFrom Email](https://endurtech.com/wpfrom-email-wordpress-plugin/), a free [WordPress Plugin](https://wordpress.org/plugins/wpfrom-email/) aimed at helping you quickly and easily update the default WordPress sender FROM Name and Email Address.  
 
-To increase brand authenticity and create name recognition among your visitors it is recommended update how WordPress sends out emails to your subscribers. Leaving the WordPress email sending settings in their default state may even result in email delivery issues. This is because the default wordpress@ emails usually trigger Internet Service Provider and email client spam filters.  
+To increase brand authenticity and create name recognition among your visitors it is recommended update how WordPress sends out emails to your subscribers. Leaving the WordPress email sending settings in their default state may even result in email delivery issues. This is because the default wordpress@ emails usually trigger Internet Service Providers and end user email spam filters.  
 
 Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you time and add value? [Share your appreciation](https://endurtech.com/give-thanks/) and support future improvements.  
 
@@ -22,6 +22,7 @@ Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you
 
 * Easily replace the default WordPress FROM Name and Email Address.
 * Disable Admin email notification upon user password reset.
+* Disable Admin email notification upon New User Registration (Gravity Forms only).
 * Disable User email notification upon user password change.
 * Disable ALL WordPress emails by leaving the Senders Email field blank.
 * Notice of Disabled WordPress emails within Dashboard At A Glance metabox.
@@ -40,6 +41,10 @@ Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you
 
 == Changelog ==
 
+= 1.7.0 =
+* Added ability to disable admin notification email upon New User Registration (only tested against Gravity Forms User Registration Addon).
+* Enhanced code structure.
+
 = 1.6.2 =
 * Tested against WordPress 5.3
 
@@ -49,10 +54,10 @@ Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you
 * Tested against WordPress 5.2.4
 
 = 1.6.0 =
-* Added ability to disable admin email upon user registration.
+* Added ability to disable admin notification email upon user password reset.
 
 = 1.5.0 =
-* Added ability to disable admin email upon user password change.
+* Added ability to disable user notification email upon user password change.
 
 = 1.4.2 =
 * Updated settings page styles.
@@ -83,7 +88,7 @@ Upon activation, visit the "Settings > WPFrom Email" section and adjust as neede
 If you check the "Enable" box, you must provide a senders email address. Otherwise no emails are sent.
 
 = How do I improve email delivery? =
-Be sure to use a real/existing email address on your server.
+Be sure to use a real/existing email address from your domain.
 
 == Upgrade Notice ==
 

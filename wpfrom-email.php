@@ -316,3 +316,6 @@ if( $pwd_user_email_init == '1' )
 {
   add_filter( 'send_password_change_email', '__return_false' );
 }
+
+// Thank you for checking out my code. Let me know how I can improve it!
+?>
