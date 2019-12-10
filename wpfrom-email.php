@@ -13,11 +13,9 @@ Version: 1.7
 Text Domain: wpfrom-emails
 Domain Path: /locale
 
-
 TODOS:
 =====================================================
 - Use one database record to obtain/set values.
-- Option: Disable 'Password changed' admin email notification.
 - Option: Disable 'E-mail address change' user email notification.
 - Add different languages.
 
@@ -26,7 +24,6 @@ x Option: Disable 'New User' admin email notification.
 ---- Not sure if this will effect account activation emails.
 x Option: Disable 'New User' user email notification.
 ---- Don't disable if you provide credentials upon registration.
-
 
 NOTEPAD:
 =====================================================
@@ -54,7 +51,6 @@ function wpfrom_backend_warning()
 {
   echo '<div class="error"><p><strong>Emails Disabled:</strong> The FROM email is missing within the WPFrom Email plugin settings. This disables all emails from your web site. To fix, disable the plugin or provide an email address.</p></div>';
 }
-
 -------------------------------------------------- */
 
 if( ! defined( 'ABSPATH' ) )
