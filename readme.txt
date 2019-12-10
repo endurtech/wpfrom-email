@@ -1,7 +1,7 @@
 === WPFrom Email ===
 Contributors: endurox
 Donate link: https://endurtech.com/give-thanks/
-Tags: email, email from, outgoing mail, disable email, disable outgoing, admin email, notification, password, default
+Tags: email, email from, outgoing mail, disable email, disable outgoing, admin email, user email, notification, password, default
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.0
