@@ -9,7 +9,7 @@ License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.0
 Tested up to: 5.3
-Version: 1.7
+Version: 1.7.0
 Text Domain: wpfrom-emails
 Domain Path: /locale
 
