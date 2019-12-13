@@ -5,7 +5,7 @@ Tags: email, email from, outgoing mail, disable email, disable outgoing, admin e
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.0
-Tested up to: 5.3
+Tested up to: 5.3.1
 Stable tag: 1.7.0
 
 Replaces default WordPress sender FROM Name and Email Address. NEW admin email options.
@@ -44,6 +44,9 @@ Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you
 = 1.7.0 =
 * Added ability to disable admin notification email upon New User Registration (only tested against Gravity Forms User Registration Addon). This disables two email notifications. First the user notification email which the user receives upon registration with a link to set their password. Secondly, the admin notification email which the site admin receives upon new user registration: "New User Registration". You won't be able to use the option to email the new user their auto-generated password since that email is now disabled. Rather, you will have to create a Gravity Forms notification within your form to send the user the password setup email.
 * Enhanced code structure.
+
+= 1.6.3 =
+* Tested against WordPress 5.3.1
 
 = 1.6.2 =
 * Tested against WordPress 5.3
