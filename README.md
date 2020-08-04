@@ -18,11 +18,11 @@ License: GPLv3 or later
 
 ## Features
 
-* Easily replace the default WordPress FROM Name and Email Address.
-* Disable Admin email notification upon user password reset.
-* Disable Admin email notification upon New User Registration (Gravity Forms only).
+* Toggle to replace the default WordPress FROM Name and Email Address.
 * Disable Admin email verification prompt.
+* Disable Admin email notification upon user password reset.
 * Disable User email notification upon user password change.
+* Disable Admin email notification upon New User Registration (Gravity Forms only).
 * Disable ALL WordPress emails by leaving the Senders Email field blank.
 * Notice of Disabled WordPress emails within Dashboard At A Glance metabox.
 * Upon deactivation, all associated database values are removed.
