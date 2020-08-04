@@ -8,7 +8,7 @@ Author URI: https://endurtech.com
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.0
-Tested up to: 5.3.1
+Tested up to: 5.5
 Version: 1.7.0
 Text Domain: wpfrom-emails
 Domain Path: /locale
@@ -18,12 +18,6 @@ TODOS:
 - Use one database record to obtain/set values.
 - Option: Disable 'E-mail address change' user email notification.
 - Add different languages.
-
-x Option: Disable 'New User' admin email notification.
----- ---- It does effect acount activation emails. These notifications must be manually created within Gravity Forms.
----- Not sure if this will effect account activation emails.
-x Option: Disable 'New User' user email notification.
----- Don't disable if you provide credentials upon registration.
 
 NOTEPAD:
 =====================================================
@@ -101,16 +95,17 @@ function wpfrom_dashboard_disabled_notice( $glances )
 	return $glances;
 }
 
-// WPFrom Plugin Deactivation Database Cleanup, You're welcome!
+// WPFrom Plugin Deactivation Database Cleanup, you're welcome!
 register_deactivation_hook( __FILE__, 'wpfrom_deactivation_cleaner' );
 function wpfrom_deactivation_cleaner()
 {
   delete_option( 'wpfrom_custom_sender_id' );
   delete_option( 'wpfrom_mail_sender_email_id' );
   delete_option( 'wpfrom_mail_sender_name_id' );
+  delete_option( 'wpfrom_admin_verify_email_id' );
   delete_option( 'wpfrom_pwd_admin_email_id' );
-  delete_option( 'wpfrom_new_user_admin_email_id' );
   delete_option( 'wpfrom_pwd_user_email_id' );
+  delete_option( 'wpfrom_new_user_admin_email_id' );
   delete_option( 'wpfrom_mail_sender_id' ); // since 1.0, now junk
   delete_option( 'wpfrom_kill_email_id' ); // since 1.4.2, now junk
 }
@@ -130,15 +125,18 @@ function wpfrom_mail_sender_register()
   // Custom WordPress Sender Name
 	add_settings_field( 'wpfrom_mail_sender_name_id', __('Custom Senders Name', 'wpfrom-mail'), 'wpfrom_mail_sender_name', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
   register_setting( 'wpfrom_mail_sender_section', 'wpfrom_mail_sender_name_id' );
+  // Disable WordPress "Admin Email Verification" prompt
+  add_settings_field( 'wpfrom_admin_verify_email_id', __('Admin Email Verification', 'wpfrom-mail'), 'wpfrom_admin_verify_email', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
+  register_setting( 'wpfrom_mail_sender_section', 'wpfrom_admin_verify_email_id' );
   // Disable WordPress "Password Rest" admin email
   add_settings_field( 'wpfrom_pwd_admin_email_id', __('User Password Reset', 'wpfrom-mail'), 'wpfrom_pwd_admin_email', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
   register_setting( 'wpfrom_mail_sender_section', 'wpfrom_pwd_admin_email_id' );
-  // Disable WordPress "New User Registration" admin email
-  add_settings_field( 'wpfrom_new_user_admin_email_id', __('New User Registration', 'wpfrom-mail'), 'wpfrom_new_user_admin_email', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
-  register_setting( 'wpfrom_mail_sender_section', 'wpfrom_new_user_admin_email_id' );
   // Disable WordPress "Password Changed" user email
   add_settings_field( 'wpfrom_pwd_user_email_id', __('User Password Changed', 'wpfrom-mail'), 'wpfrom_pwd_user_email', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
   register_setting( 'wpfrom_mail_sender_section', 'wpfrom_pwd_user_email_id' );
+  // Disable WordPress "New User Registration" admin email
+  add_settings_field( 'wpfrom_new_user_admin_email_id', __('New User Registration', 'wpfrom-mail'), 'wpfrom_new_user_admin_email', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
+  register_setting( 'wpfrom_mail_sender_section', 'wpfrom_new_user_admin_email_id' );
 }
 
 // Enable WPFrom Custom Sender checkbox
@@ -153,7 +151,7 @@ function wpfrom_custom_sender()
   {
     $custom_email = 'checked="checked" ';
   }
-  echo '<input name="wpfrom_custom_sender_id" id="wpfrom_custom_sender_id" type="checkbox" value="1" '.$custom_email.'/> <label for="wpfrom_custom_sender_id">Enable custom WordPress emails?</em></label>';
+  echo '<input name="wpfrom_custom_sender_id" id="wpfrom_custom_sender_id" type="checkbox" value="1" '.$custom_email.'/> <label for="wpfrom_custom_sender_id">Enable custom WordPress emails?</label>';
 }
 
 // FROM Email field
@@ -178,6 +176,21 @@ function wpfrom_mail_sender_name()
   echo '<input name="wpfrom_mail_sender_name_id" id="wpfrom_mail_sender_name_id" type="text" placeholder="WordPress" class="regular-text" value="' . $sender_name . '" /><br /><span style="font-size:12px; padding-left:10px;">Do not use commas and/or other special characters.</span>';
 }
 
+// Disable WordPress "Admin Email Verification" prompt checkbox
+function wpfrom_admin_verify_email()
+{
+  $admin_verify_email_prompt = get_option( 'wpfrom_admin_verify_email_id' );
+  if( ! isset ( $admin_verify_email_prompt ) || $admin_verify_email_prompt == '' )
+  {
+    delete_option( 'wpfrom_admin_verify_email_id' );
+  }
+  else
+  {
+    $admin_verify_email_prompt = 'checked="checked" ';
+  }
+  echo '<input name="wpfrom_admin_verify_email_id" id="wpfrom_admin_verify_email_id" type="checkbox" value="1" '.$admin_verify_email_prompt.'/> <label for="wpfrom_admin_verify_email_id">Disable WordPress <strong>Admin Email Verification</strong> prompt?</label><br /><span style="font-size:12px; padding-left:10px;">Stop WordPress from periodically requesting admin email verification.</span>';
+}
+
 // Disable WordPress "Password Rest" admin email checkbox
 function wpfrom_pwd_admin_email()
 {
@@ -190,22 +203,7 @@ function wpfrom_pwd_admin_email()
   {
     $pwd_admin_email = 'checked="checked" ';
   }
-  echo '<input name="wpfrom_pwd_admin_email_id" id="wpfrom_pwd_admin_email_id" type="checkbox" value="1" '.$pwd_admin_email.'/> <label for="wpfrom_pwd_admin_email_id">Disable <strong>Admin email notice</strong> upon user password reset?</em></label>';
-}
-
-// Disable WordPress "New User Registration" admin email checkbox
-function wpfrom_new_user_admin_email()
-{
-  $new_user_admin_email = get_option( 'wpfrom_new_user_admin_email_id' );
-  if( ! isset ( $new_user_admin_email ) || $new_user_admin_email == '' )
-  {
-    delete_option( 'wpfrom_new_user_admin_email_id' );
-  }
-  else
-  {
-    $new_user_admin_email = 'checked="checked" ';
-  }
-  echo '<input name="wpfrom_new_user_admin_email_id" id="wpfrom_new_user_admin_email_id" type="checkbox" value="1" '.$new_user_admin_email.'/> <label for="wpfrom_new_user_admin_email_id">Disable <strong>Admin email notice</strong> upon "New User Registration"?</em></label><br /><span style="font-size:12px; padding-left:10px;">Only for use with Gravity Forms User Registration Add-On. <a href="https://endurtech.com/wpfrom-email-wordpress-plugin/#using-wpfrom-email-wordpress-plugin" target="_blank" title="Opens in New Window">Read more</a></span>';
+  echo '<input name="wpfrom_pwd_admin_email_id" id="wpfrom_pwd_admin_email_id" type="checkbox" value="1" '.$pwd_admin_email.'/> <label for="wpfrom_pwd_admin_email_id">Disable <strong>Admin email notice</strong> upon user password reset?</label><br /><span style="font-size:12px; padding-left:10px;">Stop notifications when a user resets their password.</span>';
 }
 
 // Disable WordPress "Password Changed" user email checkbox
@@ -220,7 +218,22 @@ function wpfrom_pwd_user_email()
   {
     $pwd_user_email = 'checked="checked" ';
   }
-  echo '<input name="wpfrom_pwd_user_email_id" id="wpfrom_pwd_user_email_id" type="checkbox" value="1" '.$pwd_user_email.'/> <label for="wpfrom_pwd_user_email_id">Disable <strong>User email notice</strong> upon user password change?</em></label>';
+  echo '<input name="wpfrom_pwd_user_email_id" id="wpfrom_pwd_user_email_id" type="checkbox" value="1" '.$pwd_user_email.'/> <label for="wpfrom_pwd_user_email_id">Disable <strong>User email notice</strong> upon user password change?</label><br /><span style="font-size:12px; padding-left:10px;">Stop notifications to users when their password is changed.</span>';
+}
+
+// Disable WordPress "New User Registration" admin email checkbox
+function wpfrom_new_user_admin_email()
+{
+  $new_user_admin_email = get_option( 'wpfrom_new_user_admin_email_id' );
+  if( ! isset ( $new_user_admin_email ) || $new_user_admin_email == '' )
+  {
+    delete_option( 'wpfrom_new_user_admin_email_id' );
+  }
+  else
+  {
+    $new_user_admin_email = 'checked="checked" ';
+  }
+  echo '<input name="wpfrom_new_user_admin_email_id" id="wpfrom_new_user_admin_email_id" type="checkbox" value="1" '.$new_user_admin_email.'/> <label for="wpfrom_new_user_admin_email_id">Disable <strong>Admin email notice</strong> upon "New User Registration"?</label><br /><span style="font-size:12px; padding-left:10px;">Only for use with Gravity Forms User Registration Add-On. <a href="https://endurtech.com/wpfrom-email-wordpress-plugin/#using-wpfrom-email-wordpress-plugin" target="_blank" title="Opens in New Window">Read more</a></span>';
 }
 
 // Page description
@@ -275,6 +288,13 @@ function wpfrom_custom_sender_init()
   }
 }
 
+// Disable WordPress "Administration Email Verification" prompt 
+$admin_email_verify_prompt_init = get_option( 'wpfrom_admin_email_verify_prompt_id' );
+if( $admin_email_verify_prompt_init == '1' )
+{
+  add_filter( 'admin_email_check_interval', '__return_false' );
+}
+
 // Disable WordPress "Password Rest" admin email
 $pwd_admin_email_init = get_option( 'wpfrom_pwd_admin_email_id' );
 if( $pwd_admin_email_init == '1' )
@@ -286,6 +306,13 @@ if( $pwd_admin_email_init == '1' )
       return;
     }
   }
+}
+
+// Disable WordPress "Password Changed" user email
+$pwd_user_email_init = get_option( 'wpfrom_pwd_user_email_id' );
+if( $pwd_user_email_init == '1' )
+{
+  add_filter( 'send_password_change_email', '__return_false' );
 }
 
 // Disable WordPress "New User Registration" admin email
@@ -310,12 +337,6 @@ if( $new_user_admin_email_init == '1' )
   }
 }
 
-// Disable WordPress "Password Changed" user email
-$pwd_user_email_init = get_option( 'wpfrom_pwd_user_email_id' );
-if( $pwd_user_email_init == '1' )
-{
-  add_filter( 'send_password_change_email', '__return_false' );
-}
 
 // Thank you for checking out my code. Let me know how I can improve it!
 ?>

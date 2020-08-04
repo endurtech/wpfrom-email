@@ -4,7 +4,7 @@ Contributors: Manny Rodrigues
 Donations: https://endurtech.com/give-thanks/  
 Tags: email, email from, outgoing mail, disable email, disable outgoing, admin email, user email, notification, password, default  
 Requires WP: 5.0  
-Tested to: 5.3.1  
+Tested to: 5.5  
 Stable tag: 1.7.0  
 License: GPLv3 or later  
 
@@ -21,6 +21,7 @@ License: GPLv3 or later
 * Easily replace the default WordPress FROM Name and Email Address.
 * Disable Admin email notification upon user password reset.
 * Disable Admin email notification upon New User Registration (Gravity Forms only).
+* Disable Admin email verification prompt.
 * Disable User email notification upon user password change.
 * Disable ALL WordPress emails by leaving the Senders Email field blank.
 * Notice of Disabled WordPress emails within Dashboard At A Glance metabox.
@@ -41,7 +42,9 @@ License: GPLv3 or later
 
 * 1.7.0
   * Added ability to disable admin notification email upon New User Registration (only tested against Gravity Forms User Registration Addon). This disables two email notifications. First the user notification email which the user receives upon registration with a link to set their password. Secondly, the admin notification email which the site admin receives upon new user registration: "New User Registration". You won't be able to use the option to email the new user their auto-generated password since that email is now disabled. Rather, you will have to create a Gravity Forms notification within your form to send the user the password setup email.
+  * Added ability to disable the Admin Email Verification prompt.
   * Enhanced code structure.
+  * Tested against WordPress 5.5
 * 1.6.3
   * Tested against WordPress 5.3.1
 * 1.6.2
