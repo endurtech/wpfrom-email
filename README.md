@@ -80,3 +80,5 @@ License: GPLv3 or later
   * If you check the "Enable" box, you must provide a senders email address. Otherwise no emails are sent.
 * How do I improve email delivery?
   * Be sure to use a real/existing email address from your domain.
+* I found this plugin helpful. How can I help?
+  * Happy to have helped! Support my work and future improvements to this plugin by [sending me a tip using your Brave browser](https://endurtech.com/send-a-tip-using-the-brave-browser/) or by [sending me a one-time donation](https://endurtech.com/give-thanks/). If you have any ideas for improvements or want to contribute to the code you may [get in touch with me](https://endurtech.com/contact/).
