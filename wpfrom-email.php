@@ -9,7 +9,7 @@ License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.0
 Tested up to: 5.5
-Version: 1.7.0
+Version: 1.8.0
 Text Domain: wpfrom-emails
 Domain Path: /locale
 
@@ -106,6 +106,11 @@ function wpfrom_deactivation_cleaner()
   delete_option( 'wpfrom_pwd_admin_email_id' );
   delete_option( 'wpfrom_pwd_user_email_id' );
   delete_option( 'wpfrom_new_user_admin_email_id' );
+  
+  delete_option( 'wpfrom_autoupdate_core_email_id' );
+  delete_option( 'wpfrom_autoupdate_plugin_email_id' );
+  delete_option( 'wpfrom_autoupdate_theme_email_id' );
+
   delete_option( 'wpfrom_mail_sender_id' ); // since 1.0, now junk
   delete_option( 'wpfrom_kill_email_id' ); // since 1.4.2, now junk
 }
@@ -115,7 +120,9 @@ add_action( 'admin_init', 'wpfrom_mail_sender_register' );
 function wpfrom_mail_sender_register()
 {
   // Settings Section
-  add_settings_section( 'wpfrom_mail_sender_section', WPF_SETTINGS, 'wpfrom_mail_sender_text', 'wpfrom_mail_sender' );
+  //add_settings_section( 'wpfrom_mail_sender_section', WPF_SETTINGS, 'wpfrom_mail_intro_text', 'wpfrom_mail_sender' );
+  add_settings_section( 'wpfrom_mail_sender_section', '', 'wpfrom_mail_intro_text', 'wpfrom_mail_sender' );
+
   // Enable WordPress Custom Emails
   add_settings_field( 'wpfrom_custom_sender_id', __('WPFrom Custom Sender', 'wpfrom-mail'), 'wpfrom_custom_sender', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
   register_setting( 'wpfrom_mail_sender_section', 'wpfrom_custom_sender_id' );
@@ -125,6 +132,17 @@ function wpfrom_mail_sender_register()
   // Custom WordPress Sender Name
 	add_settings_field( 'wpfrom_mail_sender_name_id', __('Custom Senders Name', 'wpfrom-mail'), 'wpfrom_mail_sender_name', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
   register_setting( 'wpfrom_mail_sender_section', 'wpfrom_mail_sender_name_id' );
+
+  // Disable WordPress AutoUpdate Admin Email Notifications - Core
+  add_settings_field( 'wpfrom_autoupdate_core_email_id', __('AutoUpdate Core Email', 'wpfrom-mail'), 'wpfrom_autoupdate_core_email', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
+  register_setting( 'wpfrom_mail_sender_section', 'wpfrom_autoupdate_core_email_id' );
+  // Disable WordPress AutoUpdate Admin Email Notifications - Plugin
+  add_settings_field( 'wpfrom_autoupdate_plugin_email_id', __('AutoUpdate Plugin Email', 'wpfrom-mail'), 'wpfrom_autoupdate_plugin_email', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
+  register_setting( 'wpfrom_mail_sender_section', 'wpfrom_autoupdate_plugin_email_id' );
+  // Disable WordPress AutoUpdate Admin Email Notifications - Theme
+  add_settings_field( 'wpfrom_autoupdate_theme_email_id', __('AutoUpdate Theme Email', 'wpfrom-mail'), 'wpfrom_autoupdate_theme_email', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
+  register_setting( 'wpfrom_mail_sender_section', 'wpfrom_autoupdate_theme_email_id' );
+
   // Disable WordPress "Admin Email Verification" prompt
   add_settings_field( 'wpfrom_admin_verify_email_id', __('Admin Email Verification', 'wpfrom-mail'), 'wpfrom_admin_verify_email', 'wpfrom_mail_sender', 'wpfrom_mail_sender_section' );
   register_setting( 'wpfrom_mail_sender_section', 'wpfrom_admin_verify_email_id' );
@@ -151,7 +169,7 @@ function wpfrom_custom_sender()
   {
     $custom_email = 'checked="checked" ';
   }
-  echo '<input name="wpfrom_custom_sender_id" id="wpfrom_custom_sender_id" type="checkbox" value="1" '.$custom_email.'/> <label for="wpfrom_custom_sender_id">Enable custom WordPress emails?</label>';
+  echo '<input name="wpfrom_custom_sender_id" id="wpfrom_custom_sender_id" type="checkbox" value="1" ' . $custom_email . '/> <label for="wpfrom_custom_sender_id">Enable custom WordPress emails?</label><br /><span style="font-size:12px; padding-left:10px;">If enabled, set Custom Senders Email/Name below.</span>';
 }
 
 // FROM Email field
@@ -173,8 +191,109 @@ function wpfrom_mail_sender_name()
   {
     delete_option( 'wpfrom_mail_sender_name_id' );
   }
-  echo '<input name="wpfrom_mail_sender_name_id" id="wpfrom_mail_sender_name_id" type="text" placeholder="WordPress" class="regular-text" value="' . $sender_name . '" /><br /><span style="font-size:12px; padding-left:10px;">Do not use commas and/or other special characters.</span>';
+  echo '<input name="wpfrom_mail_sender_name_id" id="wpfrom_mail_sender_name_id" type="text" placeholder="WordPress" class="regular-text" value="' . $sender_name . '" /><br /><span style="font-size:12px; padding-left:10px;">Do not use commas and/or other special characters.</span>
+  <p>&nbsp;</p>';
 }
+
+
+
+
+// Disable WordPress AutoUpdate Admin Email Notifications - Core
+function wpfrom_autoupdate_core_email()
+{
+  //init vars
+  $wpfrom_autoupdate_core_email_prompt = get_option( 'wpfrom_autoupdate_core_email_id' );
+
+  $wpc = '';
+  $wpc1 = '';
+  $wpc2 = '';
+
+  if( ! isset ( $wpfrom_autoupdate_core_email_prompt ) || $wpfrom_autoupdate_core_email_prompt == '' )
+  {
+    delete_option( 'wpfrom_autoupdate_core_email_id' );
+    $wpc = ' selected="selected"';
+  }
+  elseif( $wpfrom_autoupdate_core_email_prompt == '1' )
+  {
+    $wpc1 = ' selected="selected"';
+  }
+  elseif( $wpfrom_autoupdate_core_email_prompt == '2' )
+  {
+    $wpc2 = ' selected="selected"';
+  }
+
+  echo '<select name="wpfrom_autoupdate_core_email_id" id="wpfrom_autoupdate_core_email_id">
+    <option value=""'. $wpc .'>Default, Send Core AutoUpdate Notices</option>
+    <option value="1"'. $wpc1 .'>Send Core AutoUpdate Failure Notices</option>
+    <option value="2"'. $wpc2 .'>Disable ALL Core AutoUpdate Notices</option>
+  </select> <br /><span style="font-size:12px; padding-left:10px;">Controls the <strong>WordPress Core</strong> AutoUpdate Admin Email Notification.</span>';
+}
+
+// Disable WordPress AutoUpdate Admin Email Notifications - Plugin
+function wpfrom_autoupdate_plugin_email()
+{
+  //init vars
+  $wpfrom_autoupdate_plugin_email_prompt = get_option( 'wpfrom_autoupdate_plugin_email_id' );
+
+  $wpp = '';
+  $wpp1 = '';
+  $wpp2 = '';
+
+  if( ! isset( $wpfrom_autoupdate_plugin_email_prompt ) || $wpfrom_autoupdate_plugin_email_prompt == '' )
+  {
+    delete_option( 'wpfrom_autoupdate_plugin_email_id' );
+    $wpp = ' selected="selected"';
+  }
+  elseif( $wpfrom_autoupdate_plugin_email_prompt == '1' )
+  {
+    $wpp1 = ' selected="selected"';
+  }
+  elseif( $wpfrom_autoupdate_plugin_email_prompt == '2' )
+  {
+    $wpp2 = ' selected="selected"';
+  }
+
+  echo '<select name="wpfrom_autoupdate_plugin_email_id" id="wpfrom_autoupdate_plugin_email_id">
+    <option value=""'. $wpp .'>Default, Send Plugin AutoUpdate Notices</option>
+    <option value="1"'. $wpp1 .'>Send Plugin AutoUpdate Failure Notices</option>
+    <option value="2"'. $wpp2 .'>Disable ALL Plugin AutoUpdate Notices</option>
+  </select> <br /><span style="font-size:12px; padding-left:10px;">Controls the <strong>WordPress Plugin</strong> AutoUpdate Admin Emails.</span>';
+}
+
+// Disable WordPress AutoUpdate Admin Email Notifications - Theme
+function wpfrom_autoupdate_theme_email()
+{
+  //init vars
+  $wpfrom_autoupdate_theme_email_prompt = get_option( 'wpfrom_autoupdate_theme_email_id' );
+
+  $wpt = '';
+  $wpt1 = '';
+  $wpt2 = '';
+
+  if( ! isset( $wpfrom_autoupdate_theme_email_prompt ) || $wpfrom_autoupdate_theme_email_prompt == '' )
+  {
+    delete_option( 'wpfrom_autoupdate_theme_email_id' );
+    $wpt = ' selected="selected"';
+  }
+  elseif( $wpfrom_autoupdate_theme_email_prompt == '1' )
+  {
+    $wpt1 = ' selected="selected"';
+  }
+  elseif( $wpfrom_autoupdate_theme_email_prompt == '2' )
+  {
+    $wpt2 = ' selected="selected"';
+  }
+
+  echo '<select name="wpfrom_autoupdate_theme_email_id" id="wpfrom_autoupdate_theme_email_id">
+    <option value=""'. $wpt .'>Default, Send Theme AutoUpdate Notices</option>
+    <option value="1"'. $wpt1 .'>Send Theme AutoUpdate Failure Notices</option>
+    <option value="2"'. $wpt2 .'>Disable ALL Theme AutoUpdate Notices</option>
+  </select> <br /><span style="font-size:12px; padding-left:10px;">Controls the <strong>WordPress Theme</strong> AutoUpdate Admin Emails.</span>
+  <p>&nbsp;</p>';
+}
+
+
+
 
 // Disable WordPress "Admin Email Verification" prompt checkbox
 function wpfrom_admin_verify_email()
@@ -237,10 +356,15 @@ function wpfrom_new_user_admin_email()
 }
 
 // Page description
-function wpfrom_mail_sender_text()
+function wpfrom_mail_intro_text()
 {
-  echo '<p>Replaces the default WordPress FROM <strong>Email</strong> and <strong>Name</strong>. Enable and set Senders Email (<strong><em>otherwise all mail is disabled</em></strong>).</p>
-  <p>Did <a href="https://wordpress.org/plugins/wpfrom-email/" target="_blank" title="Opens New Window">this plugin</a> save you time and add value? <a href="https://endurtech.com/give-thanks/" target="_blank" title="Opens New Window"><strong>Share your appreciation</strong></a> and support future improvements.</p>';
+  /*echo '<p>Replaces the default WordPress FROM <strong>Email</strong> and <strong>Name</strong>. Enable and set Senders Email (<strong><em>otherwise all mail is disabled</em></strong>).</p>
+  <p>Did <a href="https://wordpress.org/plugins/wpfrom-email/" target="_blank" title="Opens New Window">this plugin</a> save you time and add value? <a href="https://endurtech.com/give-thanks/" target="_blank" title="Opens New Window"><strong>Share your appreciation</strong></a> and support future improvements.</p>';*/
+}
+// Page exit statement
+function wpfrom_mail_exit_text()
+{
+  echo '<p>Did <a href="https://wordpress.org/plugins/wpfrom-email/" target="_blank" title="Opens New Window">this plugin</a> save you time? <a href="https://endurtech.com/give-thanks/" target="_blank" title="Opens New Window"><strong>Share your appreciation</strong></a> and support future improvements.</p>';
 }
 
 // Settings form
@@ -255,6 +379,7 @@ function wpfrom_mail_sender_output()
     <form method="post" action="options.php">';
       settings_fields( 'wpfrom_mail_sender_section' );
       do_settings_sections( 'wpfrom_mail_sender' );
+      echo wpfrom_mail_exit_text();
       submit_button();
   echo '</form>
   </div>';
@@ -287,6 +412,94 @@ function wpfrom_custom_sender_init()
     }
   }
 }
+
+
+
+
+// Disable WordPress AutoUpdate Admin Email Notifications - Core
+$wpfrom_autoupdate_core_email_prompt = get_option( 'wpfrom_autoupdate_core_email_id' );
+if( $wpfrom_autoupdate_core_email_prompt == '2' )
+{
+  // Disable ALL Core Email
+  add_filter( 'auto_core_update_send_email', '__return_false' );
+}
+elseif( $wpfrom_autoupdate_core_email_prompt == '1' )
+{
+  // Only Send Core Email Errors
+  add_filter( 'auto_core_update_send_email', 'wpfrom_autoupdate_core_email_onerror', 10, 4 );
+  function wpfrom_autoupdate_core_email_onerror( $send, $type, $core_update, $result )
+  {
+    if( ! empty( $type ) && $type == 'success' )
+    {
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+  }
+}
+
+// Disable WordPress AutoUpdate Admin Email Notifications - Plugin
+$wpfrom_autoupdate_plugin_email_prompt = get_option( 'wpfrom_autoupdate_plugin_email_id' );
+if( $wpfrom_autoupdate_plugin_email_prompt == '2' )
+{
+  add_filter( 'auto_plugin_update_send_email', 'wpfrom_disable_autoupdate_plugin_email', 10, 2 );
+  function wpfrom_disable_autoupdate_plugin_email()
+  {
+    return false;
+  }
+}
+elseif( $wpfrom_autoupdate_plugin_email_prompt == '1' )
+{
+  add_filter( 'auto_plugin_update_send_email', 'wpfrom_disable_autoupdate_failed_plugin_email', 10, 1 );
+  function wpfrom_disable_autoupdate_failed_plugin_email( $true, $update_results = null )
+  {
+    if( is_array( $update_results ) )
+    {
+      foreach( $update_results as $update_result )
+      {
+        if( true !== $update_result->result )
+        {
+          return $true;
+        }
+      }
+    }
+    return false;
+  }
+}
+
+// Disable WordPress AutoUpdate Admin Email Notifications - Theme
+$wpfrom_autoupdate_theme_email_prompt = get_option( 'wpfrom_autoupdate_theme_email_id' );
+if( $wpfrom_autoupdate_theme_email_prompt == '2' )
+{
+  add_filter( 'auto_theme_update_send_email', 'wpfrom_disable_autoupdate_theme_email', 10, 2 );
+  function wpfrom_disable_autoupdate_theme_email()
+  {
+    return false;
+  }
+}
+elseif( $wpfrom_autoupdate_theme_email_prompt == '1' )
+{
+  add_filter( 'auto_theme_update_send_email', 'wpfrom_disable_autoupdate_failed_theme_email', 10, 1 );
+  function wpfrom_disable_autoupdate_failed_theme_email( $true, $update_results = null )
+  {
+    if( is_array( $update_results ) )
+    {
+      foreach( $update_results as $update_result )
+      {
+        if( true !== $update_result->result )
+        {
+          return $true;
+        }
+      }
+    }
+    return false;
+  }
+}
+
+
+
 
 // Disable WordPress "Administration Email Verification" prompt 
 $admin_email_verify_prompt_init = get_option( 'wpfrom_admin_email_verify_prompt_id' );
@@ -338,5 +551,7 @@ if( $new_user_admin_email_init == '1' )
 }
 
 
-// Thank you for checking out my code. Let me know how I can improve it!
+
+
+// Thank you for checking out my code. Let me know how I can improve upon it!
 ?>

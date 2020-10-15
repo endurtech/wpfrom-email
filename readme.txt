@@ -6,7 +6,7 @@ License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.0
 Tested up to: 5.5
-Stable tag: 1.7.1
+Stable tag: 1.8.0
 
 Replaces default WordPress sender FROM Name and Email Address. NEW admin email options.
 
@@ -16,11 +16,18 @@ Introducing [WPFrom Email](https://endurtech.com/wpfrom-email-wordpress-plugin/)
 
 To increase brand authenticity and create name recognition among your visitors it is recommended update how WordPress sends out emails to your subscribers. Leaving the WordPress email sending settings in their default state may even result in email delivery issues. This is because the default wordpress@ emails usually trigger Internet Service Providers and end user email spam filters.  
 
-Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you time and add value? [Share your appreciation](https://endurtech.com/give-thanks/) and support future improvements.  
+Using this plugin you can also disable the admin email notification upon New User Registration (only tested against Gravity Forms User Registration Addon). This disables two email notifications. First the user notification email which the user receives upon registration with a link to set their password. Secondly, the admin notification email which the site admin receives upon new user registration: "New User Registration". You won't be able to use the option to email the new user their auto-generated password since that email is now disabled. Rather, you will have to create a Gravity Forms notification within your form to send the user the password setup email.  
+
+Toggle WordPress AutoUpdate Email Notifications for the WordPress Core, Plugins or Themes. Or choose to have email notificaitons sent only if there was an error.  
+
+Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you time? [Share your appreciation](https://endurtech.com/give-thanks/) and support future improvements.  
 
 == Features ==
 
 * Toggle to replace the default WordPress FROM Name and Email Address.
+* Disable Admin email notices of WordPress Core Autoupdates or Send Only on Error.
+* Disable Admin email notices of Autoupdated Plugins or Send Only on Error.
+* Disable Admin email notices of Autoupdated Themes or Send Only on Error.
 * Disable Admin email verification prompt.
 * Disable Admin email notification upon user password reset.
 * Disable User email notification upon user password change.
@@ -41,6 +48,15 @@ Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you
 2. WPFrom Admin Dashboard notice of disabled emails option triggered.
 
 == Changelog ==
+
+= 1.8.0 =
+* Toggle WordPress Themes AutoUpdate Admin Email Notifications
+* Toggle WordPress Plugins AutoUpdate Admin Email Notifications
+* Reorganized plugin settings page structure and simplified descriptions and text
+
+= 1.7.5 =
+* Toggle WordPress Core AutoUpdate Admin Email Notifications
+* Code improvements
 
 = 1.7.1 =
 * Added Donate button to Plugins page.
