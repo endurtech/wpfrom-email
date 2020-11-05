@@ -9,7 +9,7 @@ License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.0
 Tested up to: 5.5
-Version: 1.8.0
+Version: 1.8.1
 Text Domain: wpfrom-emails
 Domain Path: /locale
 
@@ -502,7 +502,7 @@ elseif( $wpfrom_autoupdate_theme_email_prompt == '1' )
 
 
 // Disable WordPress "Administration Email Verification" prompt 
-$admin_email_verify_prompt_init = get_option( 'wpfrom_admin_email_verify_prompt_id' );
+$admin_email_verify_prompt_init = get_option( 'wpfrom_admin_verify_email_id' );
 if( $admin_email_verify_prompt_init == '1' )
 {
   add_filter( 'admin_email_check_interval', '__return_false' );

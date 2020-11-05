@@ -6,7 +6,7 @@ License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.0
 Tested up to: 5.5
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 
 Replaces default WordPress sender FROM Name and Email Address. NEW admin email options.
 
@@ -48,6 +48,9 @@ Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you
 2. WPFrom Admin Dashboard notice of disabled emails option triggered.
 
 == Changelog ==
+
+= 1.8.1 =
+* Fixed a code error which caused the Admin Email Notification setting not to work.
 
 = 1.8.0 =
 * Toggle WordPress Themes AutoUpdate Admin Email Notifications
