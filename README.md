@@ -4,8 +4,8 @@ Contributors: Manny Rodrigues
 Donations: https://endurtech.com/give-thanks/  
 Tags: email, email from, outgoing mail, disable email, disable outgoing, admin email, user email, notification, password, default  
 Requires WP: 5.0  
-Tested to: 5.5  
-Stable tag: 1.8.1  
+Tested to: 5.6  
+Stable tag: 1.8.2  
 License: GPLv3 or later  
 
 ## Description
@@ -47,6 +47,8 @@ License: GPLv3 or later
 
 ## Changelog
 
+* 1.8.2
+  * Tested against WordPress 5.6
 * 1.8.1
   * Fixed a code error which caused the Admin Email Notification setting not to work.
 * 1.8.0
