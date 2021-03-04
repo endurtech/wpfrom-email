@@ -8,8 +8,8 @@ Author URI: https://endurtech.com
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.0
-Tested up to: 5.6
-Version: 1.8.2
+Tested up to: 5.7
+Version: 1.8.3
 Text Domain: wpfrom-emails
 Domain Path: /locale
 
