@@ -68,7 +68,7 @@ function wpfrom_email_settings_link( $links )
 add_filter( 'dashboard_glance_items', 'wpfrom_dashboard_disabled_notice' );
 function wpfrom_dashboard_disabled_notice( $glances )
 {
-  $email_killed_init = get_option( 'wpfrom_mail_sender_email_id' );
+  $email_killed_init = esc_html( get_option( 'wpfrom_mail_sender_email_id' ) );
   $custom_email = get_option( 'wpfrom_custom_sender_id' );
   if( $email_killed_init == '' && $custom_email == '1' )
   {
@@ -154,10 +154,12 @@ function wpfrom_custom_sender()
   echo '<input name="wpfrom_custom_sender_id" id="wpfrom_custom_sender_id" type="checkbox" value="1" ' . $custom_email . '/> <label for="wpfrom_custom_sender_id">Enable custom WordPress emails?</label><br /><span style="font-size:12px; padding-left:10px;">If enabled, set Custom Senders Email/Name below.</span>';
 }
 
+
+
 // FROM Email field
 function wpfrom_mail_sender_email()
 {
-  $sender_email = sanitize_text_field( get_option( 'wpfrom_mail_sender_email_id' ) );
+  $sender_email = esc_html( get_option( 'wpfrom_mail_sender_email_id' ) );
   if( $sender_email == '' )
   {
     delete_option( 'wpfrom_mail_sender_email_id' );
@@ -168,7 +170,7 @@ function wpfrom_mail_sender_email()
 // FROM Name field
 function wpfrom_mail_sender_name()
 {
-  $sender_name = sanitize_text_field( get_option( 'wpfrom_mail_sender_name_id' ) );
+  $sender_name = esc_html( get_option( 'wpfrom_mail_sender_name_id' ) );
   if( $sender_name == '' )
   {
     delete_option( 'wpfrom_mail_sender_name_id' );
@@ -356,7 +358,7 @@ function wpfrom_mail_sender_output()
     <div style="clear:both;"></div>
   </div>
   <div class="wrap" style="padding:20px; border-top:1px solid #cccccc; border-right:1px solid #cccccc; border-bottom:2px solid #cccccc; border-left:2px solid #cccccc; border-radius:10px; background:#ffffff;">
-    <form method="post" action="options.php">';
+    <form method="post" action="options.php" accept-charset="utf-8">';
       settings_fields( 'wpfrom_mail_sender_section' );
       do_settings_sections( 'wpfrom_mail_sender' );
       echo wpfrom_mail_exit_text();
@@ -378,7 +380,7 @@ function wpfrom_custom_sender_init()
     {
       function wpfrom_new_mail_from()
       {
-        return get_option( 'wpfrom_mail_sender_email_id' );
+        return esc_html( get_option( 'wpfrom_mail_sender_email_id' ) );
       }
     }
     // Replace the default FROM Name: WordPress
@@ -387,7 +389,7 @@ function wpfrom_custom_sender_init()
     {
       function wpfrom_new_mail_from_name()
       {
-        return get_option( 'wpfrom_mail_sender_name_id' );
+        return esc_html( get_option( 'wpfrom_mail_sender_name_id' ) );
       }
     }
   }
