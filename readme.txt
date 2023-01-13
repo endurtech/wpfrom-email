@@ -1,12 +1,12 @@
 === WPFrom Email ===
-Contributors: endurox
+Contributors: endurox, wpgearpro
 Donate link: https://endurtech.com/give-thanks/
 Tags: email, email from, outgoing mail, disable email, disable outgoing, admin email, user email, notification, password, default
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.0
-Tested up to: 5.9
-Stable tag: 1.8.6
+Tested up to: 6.1
+Stable tag: 1.8.9
 
 Replaces default WordPress sender FROM Name and Email Address. NEW admin email options.
 
@@ -18,7 +18,7 @@ To increase brand authenticity and create name recognition among your visitors i
 
 Using this plugin you can also disable the admin email notification upon New User Registration (only tested against Gravity Forms User Registration Addon). This disables two email notifications. First the user notification email which the user receives upon registration with a link to set their password. Secondly, the admin notification email which the site admin receives upon new user registration: "New User Registration". You won't be able to use the option to email the new user their auto-generated password since that email is now disabled. Rather, you will have to create a Gravity Forms notification within your form to send the user the password setup email.  
 
-Toggle WordPress AutoUpdate Email Notifications for the WordPress Core, Plugins or Themes. Or choose to have email notificaitons sent only if there was an error.  
+Toggle WordPress AutoUpdate Email Notifications for the WordPress Core, Plugins or Themes. Or choose to have email notifications sent only if there was an error.  
 
 Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you time? [Share your appreciation](https://endurtech.com/give-thanks/) and support future improvements.  
 
@@ -48,6 +48,16 @@ Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you
 2. WPFrom Admin Dashboard notice of disabled emails option triggered.
 
 == Changelog ==
+
+= 1.8.9 (2023/01/13) =
+* Happy Friday the 13th! A potential cross-site scripting vulnerability was just discovered and kindly reported by Rio Darmawan (https://patchstack.com/database/researcher/0f0ce3de-fbab-4348-9729-a5ef92c74b3e) with PatchStack. 
+* Potential XSS Issue Resolved. Thank you Rio!
+
+= 1.8.8 (2022/10/26) =
+* Tested against WordPress 6.1
+
+= 1.8.7 (2022/05/07) =
+* Tested against WordPress 6.0
 
 = 1.8.6 =
 * Tested against WordPress 5.9

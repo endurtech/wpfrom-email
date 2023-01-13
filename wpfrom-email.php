@@ -3,13 +3,13 @@
 Plugin Name: WPFrom Email
 Plugin URI: https://endurtech.com/wpfrom-email-wordpress-plugin/
 Description: Replaces default WordPress sender FROM Name and Email Address. NEW admin email options.
-Author: Manny Rodrigues
-Author URI: https://endurtech.com
+Author: WPGear.Pro
+Author URI: https://wpgear.pro
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.0
-Tested up to: 5.9
-Version: 1.8.6
+Tested up to: 6.1
+Version: 1.8.9
 Text Domain: wpfrom-emails
 Domain Path: /locale
 
@@ -157,7 +157,7 @@ function wpfrom_custom_sender()
 // FROM Email field
 function wpfrom_mail_sender_email()
 {
-  $sender_email = get_option( 'wpfrom_mail_sender_email_id' );
+  $sender_email = sanitize_text_field( get_option( 'wpfrom_mail_sender_email_id' ) );
   if( $sender_email == '' )
   {
     delete_option( 'wpfrom_mail_sender_email_id' );
@@ -168,7 +168,7 @@ function wpfrom_mail_sender_email()
 // FROM Name field
 function wpfrom_mail_sender_name()
 {
-  $sender_name = get_option( 'wpfrom_mail_sender_name_id' );
+  $sender_name = sanitize_text_field( get_option( 'wpfrom_mail_sender_name_id' ) );
   if( $sender_name == '' )
   {
     delete_option( 'wpfrom_mail_sender_name_id' );
@@ -176,7 +176,6 @@ function wpfrom_mail_sender_name()
   echo '<input name="wpfrom_mail_sender_name_id" id="wpfrom_mail_sender_name_id" type="text" placeholder="WordPress" class="regular-text" value="' . $sender_name . '" /><br /><span style="font-size:12px; padding-left:10px;">Do not use commas and/or other special characters.</span>
   <p>&nbsp;</p>';
 }
-
 
 
 
@@ -273,7 +272,6 @@ function wpfrom_autoupdate_theme_email()
   </select> <br /><span style="font-size:12px; padding-left:10px;">Controls the <strong>WordPress Theme</strong> AutoUpdate Admin Emails.</span>
   <p>&nbsp;</p>';
 }
-
 
 
 
@@ -409,7 +407,7 @@ elseif( $wpfrom_autoupdate_core_email_prompt == '1' )
 {
   // Only Send Core Email Errors
   add_filter( 'auto_core_update_send_email', 'wpfrom_autoupdate_core_email_onerror', 10, 4 );
-  function wpfrom_autoupdate_core_email_onerror( $send, $type, $core_update, $result )
+  function wpfrom_autoupdate_core_email_onerror($send,$type,$core_update,$result)
   {
     if( ! empty( $type ) && $type == 'success' )
     {
@@ -482,7 +480,6 @@ elseif( $wpfrom_autoupdate_theme_email_prompt == '1' )
 
 
 
-
 // Disable WordPress "Administration Email Verification" prompt 
 $admin_email_verify_prompt_init = get_option( 'wpfrom_admin_verify_email_id' );
 if( $admin_email_verify_prompt_init == '1' )
@@ -523,6 +520,7 @@ if( $new_user_admin_email_init == '1' )
 
 
 
-
+//
 // Thank you for checking out my code. Let me know how I can improve upon it!
+//
 ?>
