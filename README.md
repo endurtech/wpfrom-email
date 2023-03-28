@@ -3,9 +3,9 @@
 Contributors: Manny Rodrigues  
 Donations: https://endurtech.com/give-thanks/  
 Tags: email, email from, outgoing mail, disable email, disable outgoing, admin email, user email, notification, password, default  
-Requires WP: 5.0  
-Tested to: 6.1  
-Stable tag: 1.8.9  
+Requires WP: 5.4  
+Tested to: 6.2  
+Stable tag: 1.9.0  
 License: GPLv3 or later  
 
 ## Description
@@ -46,6 +46,9 @@ License: GPLv3 or later
 2. WPFrom Admin Dashboard notice of disabled emails option triggered.
 
 ## Changelog
+
+* 1.9.0 (2023/03/28)
+  * Tested against WordPress 6.2
 
 * 1.8.9 (2023/01/13)
   * Happy Friday the 13th! A potential cross-site scripting vulnerability was just discovered and kindly reported by Rio Darmawan (https://patchstack.com/database/researcher/0f0ce3de-fbab-4348-9729-a5ef92c74b3e) with PatchStack. 
