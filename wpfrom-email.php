@@ -3,13 +3,13 @@
 Plugin Name: WPFrom Email
 Plugin URI: https://endurtech.com/wpfrom-email-wordpress-plugin/
 Description: Replaces default WordPress sender FROM Name and Email Address. NEW admin email options.
-Author: WPGear.Pro
-Author URI: https://wpgear.pro
+Author: WP Gear Pro
+Author URI: https://wpgearpro.com
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.4
-Tested up to: 6.2
-Version: 1.9.0
+Tested up to: 6.4
+Version: 1.9.2
 Text Domain: wpfrom-emails
 Domain Path: /locale
 

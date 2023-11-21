@@ -5,8 +5,8 @@ Tags: email, email from, outgoing mail, disable email, disable outgoing, admin e
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.4
-Tested up to: 6.2
-Stable tag: 1.9.0
+Tested up to: 6.4
+Stable tag: 1.9.2
 
 Replaces default WordPress sender FROM Name and Email Address. NEW admin email options.
 
@@ -49,17 +49,23 @@ Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you
 
 == Changelog ==
 
-= 1.9.0 (2023/03/28) =
+= 1.9.2 (2023-11-08) =
+* Updated plugin author information.
+
+= 1.9.1 (2023-11-08) =
+* Tested against WordPress 6.4
+
+= 1.9.0 (2023-03-28) =
 * Tested against WordPress 6.2
 
-= 1.8.9 (2023/01/13) =
+= 1.8.9 (2023-01-13) =
 * Happy Friday the 13th! A potential cross-site scripting vulnerability was just discovered and kindly reported by Rio Darmawan (https://patchstack.com/database/researcher/0f0ce3de-fbab-4348-9729-a5ef92c74b3e) with PatchStack. 
 * Potential XSS Issue Resolved. Thank you Rio!
 
-= 1.8.8 (2022/10/26) =
+= 1.8.8 (2022-10-26) =
 * Tested against WordPress 6.1
 
-= 1.8.7 (2022/05/07) =
+= 1.8.7 (2022-05-07) =
 * Tested against WordPress 6.0
 
 = 1.8.6 =
