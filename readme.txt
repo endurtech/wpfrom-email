@@ -1,12 +1,12 @@
 === WPFrom Email ===
 Contributors: wpgearpro, endurox
 Donate link: https://endurtech.com/give-thanks/
-Tags: email, email from, outgoing mail, disable email, disable outgoing, admin email, user email, notification, password, default
+Tags: wordpress email, outgoing email, disable email, email notification, email customize
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.4
-Tested up to: 6.4
-Stable tag: 1.9.2
+Tested up to: 6.5
+Stable tag: 1.9.5
 
 Replaces default WordPress sender FROM Name and Email Address. NEW admin email options.
 
@@ -48,6 +48,15 @@ Did [this plugin](https://endurtech.com/wpfrom-email-wordpress-plugin/) save you
 2. WPFrom Admin Dashboard notice of disabled emails option triggered.
 
 == Changelog ==
+
+= 1.9.5 (2024-04-02) =
+* Added WordPress Repository blueprint feature for user previews.
+
+= 1.9.4 (2024-04-02) =
+* Tested against WordPress 6.5
+
+= 1.9.3 (2024-02-08) =
+* Resolved PHP Warning which was triggered upon new user registration when 'disable admin notification upon new user registers' was toggled on.
 
 = 1.9.2 (2023-11-08) =
 * Updated plugin author information.

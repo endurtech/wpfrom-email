@@ -8,8 +8,8 @@ Author URI: https://wpgearpro.com
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.4
-Tested up to: 6.4
-Version: 1.9.2
+Tested up to: 6.5
+Version: 1.9.5
 Text Domain: wpfrom-emails
 Domain Path: /locale
 
@@ -516,13 +516,15 @@ if( $new_user_admin_email_init == '1' )
   add_filter( 'wp_new_user_notification_email_admin', 'disable_admin_email', 10, 3 );
   function disable_admin_email( $wp_new_user_notification_email_admin, $user, $blogname )
   {
-    return;
+        // Return an array with junk values to prevent the wp_mail() function from being called
+        return array(
+            'to' => '',
+            'subject' => '',
+            'message' => '',
+            'headers' => '',
+        );
+        //    return;
   }
 }
-
-
-
-//
 // Thank you for checking out my code. Let me know how I can improve upon it!
-//
 ?>
